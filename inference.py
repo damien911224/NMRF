@@ -165,6 +165,8 @@ if __name__ == "__main__":
         else:
             raise ValueError(f"Not supported dataset {args.dataset_name} for inference")
     elif args.input:
+        print(args.concat)
+        exit()
         if not args.concat:
             n_pairs = len(args.input) // 2
             image_list = list(zip(args.input[:n_pairs], args.input[n_pairs:]))
