@@ -172,7 +172,7 @@ if __name__ == "__main__":
             n_pairs = len(args.input)
             image_list = args.input
         print(image_list)
-        dataset = datasets.StereoDataset()
+        dataset = datasets.StereoDataset(concat_input=args.concat)
         dataset.image_list = image_list
         dataset.is_test = True
         dataset.extra_info = [None] * len(image_list)

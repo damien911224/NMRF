@@ -27,7 +27,7 @@ def read_all_lines(filename):
 
 
 class StereoDataset(data.Dataset):
-    def __init__(self, aug_params=None, sparse=False, reader=None):
+    def __init__(self, aug_params=None, sparse=False, reader=None, concat_input=False):
         self.augmentor = None
         self.sparse = sparse
         self.img_pad = aug_params.pop("img_pad", None) if aug_params is not None else None
@@ -54,7 +54,7 @@ class StereoDataset(data.Dataset):
 
         sample = {}
         if self.is_test:
-            if len(self.image_list[index]) != 2:
+            if concat_input:
                 img1 = frame_utils.read_gen(self.image_list[index][0])
                 img2 = frame_utils.read_gen(self.image_list[index][1])
                 img1 = np.array(img1).astype(np.uint8)[..., :3]
@@ -84,7 +84,7 @@ class StereoDataset(data.Dataset):
         else:
             valid = disp < 512
 
-        if len(self.image_list[index]) != 2:
+        if concat_input:
             img1 = frame_utils.read_gen(self.image_list[index][0])
             img2 = frame_utils.read_gen(self.image_list[index][1])
         else:
