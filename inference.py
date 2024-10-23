@@ -179,5 +179,8 @@ if __name__ == "__main__":
         dataset.image_list = image_list
         dataset.is_test = True
         dataset.extra_info = [None] * len(image_list)
-        prefix = os.path.dirname(image_list[0][0])
+        if not args.concat:
+            prefix = os.path.dirname(image_list[0][0])
+        else:
+            prefix = os.path.dirname(image_list[0])
         run_on_dataset(dataset, model, output, _find_output_path(prefix), args.show_attr)
