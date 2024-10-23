@@ -94,9 +94,9 @@ class StereoDataset(data.Dataset):
             img2 = frame_utils.read_gen(self.image_list[index][1])
         else:
             concat_img = frame_utils.read_gen(self.image_list[index])
-            h = concat_img.shape[0]
-            img1 = concat_img[:, :h // 2]
-            img2 = concat_img[:, h // 2:]
+            w = concat_img.shape[1]
+            img1 = concat_img[:, :w // 2]
+            img2 = concat_img[:, w // 2:]
         super_pixel_label = self.image_list[index][0][:-len('.png')] + "_lsc_lbl.png"
         if not os.path.exists(super_pixel_label):
             img = cv2.cvtColor(np.array(img1), cv2.COLOR_RGB2BGR)
