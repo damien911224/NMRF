@@ -88,7 +88,10 @@ def run_on_dataset(dataset, model, output, find_output_path=None, show_attr="dis
         else:
             raise ValueError(f"not supported visualization attribute {show_attr}")
 
-        file_path = dataset.image_list[idx][0]
+        if dataset.concat_input:
+            file_path = dataset.image_list[idx]
+        else:
+            file_path = dataset.image_list[idx][0]
         if output:
             assert find_output_path is not None
             output_path = os.path.join(output, find_output_path(file_path))
