@@ -44,6 +44,7 @@ class StereoDataset(data.Dataset):
 
         self.is_test = False
         self.init_seed = False
+        self.concat_input = concat_input
         self.flow_list = []
         self.disparity_list = []
         self.image_list = []
@@ -54,7 +55,7 @@ class StereoDataset(data.Dataset):
 
         sample = {}
         if self.is_test:
-            if concat_input:
+            if self.concat_input:
                 img1 = frame_utils.read_gen(self.image_list[index][0])
                 img2 = frame_utils.read_gen(self.image_list[index][1])
                 img1 = np.array(img1).astype(np.uint8)[..., :3]
@@ -84,7 +85,7 @@ class StereoDataset(data.Dataset):
         else:
             valid = disp < 512
 
-        if concat_input:
+        if self.concat_input:
             img1 = frame_utils.read_gen(self.image_list[index][0])
             img2 = frame_utils.read_gen(self.image_list[index][1])
         else:
