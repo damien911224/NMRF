@@ -61,7 +61,7 @@ class StereoDataset(data.Dataset):
                 img1 = np.array(img1).astype(np.uint8)[..., :3]
                 img2 = np.array(img2).astype(np.uint8)[..., :3]
             else:
-                concat_img = frame_utils.read_gen(self.image_list[index][0])
+                concat_img = frame_utils.read_gen(self.image_list[index])
                 concat_img = np.array(concat_img).astype(np.uint8)[..., :3]
                 w = concat_img.shape[1]
                 img1 = concat_img[:, :w // 2]
@@ -93,7 +93,7 @@ class StereoDataset(data.Dataset):
             img1 = frame_utils.read_gen(self.image_list[index][0])
             img2 = frame_utils.read_gen(self.image_list[index][1])
         else:
-            concat_img = frame_utils.read_gen(self.image_list[index][0])
+            concat_img = frame_utils.read_gen(self.image_list[index])
             h = concat_img.shape[0]
             img1 = concat_img[:, :h // 2]
             img2 = concat_img[:, h // 2:]
