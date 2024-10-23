@@ -55,7 +55,7 @@ class StereoDataset(data.Dataset):
 
         sample = {}
         if self.is_test:
-            if self.concat_input:
+            if not self.concat_input:
                 img1 = frame_utils.read_gen(self.image_list[index][0])
                 img2 = frame_utils.read_gen(self.image_list[index][1])
                 img1 = np.array(img1).astype(np.uint8)[..., :3]
