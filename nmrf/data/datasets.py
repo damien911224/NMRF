@@ -54,7 +54,7 @@ class StereoDataset(data.Dataset):
 
         sample = {}
         if self.is_test:
-            if len(self.image_list[index]) > 1:
+            if len(self.image_list[index]) != 2:
                 img1 = frame_utils.read_gen(self.image_list[index][0])
                 img2 = frame_utils.read_gen(self.image_list[index][1])
                 img1 = np.array(img1).astype(np.uint8)[..., :3]
@@ -84,7 +84,7 @@ class StereoDataset(data.Dataset):
         else:
             valid = disp < 512
 
-        if len(self.image_list[index]) > 1:
+        if len(self.image_list[index]) != 2:
             img1 = frame_utils.read_gen(self.image_list[index][0])
             img2 = frame_utils.read_gen(self.image_list[index][1])
         else:
