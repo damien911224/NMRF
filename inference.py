@@ -170,7 +170,7 @@ if __name__ == "__main__":
             image_list = list(zip(args.input[:n_pairs], args.input[n_pairs:]))
         else:
             n_pairs = len(args.input)
-            image_list = args.input
+            image_list = args.input[:2]
         print(image_list)
         dataset = datasets.StereoDataset(concat_input=args.concat)
         dataset.image_list = image_list
