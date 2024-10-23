@@ -54,10 +54,17 @@ class StereoDataset(data.Dataset):
 
         sample = {}
         if self.is_test:
-            img1 = frame_utils.read_gen(self.image_list[index][0])
-            img2 = frame_utils.read_gen(self.image_list[index][1])
-            img1 = np.array(img1).astype(np.uint8)[..., :3]
-            img2 = np.array(img2).astype(np.uint8)[..., :3]
+            if len(self.image_list[index]) > 1:
+                img1 = frame_utils.read_gen(self.image_list[index][0])
+                img2 = frame_utils.read_gen(self.image_list[index][1])
+                img1 = np.array(img1).astype(np.uint8)[..., :3]
+                img2 = np.array(img2).astype(np.uint8)[..., :3]
+            else:
+                concat_img = frame_utils.read_gen(self.image_list[index][0])
+                concat_img = np.array(concat_img).astype(np.uint8)[..., :3]
+                h = concat_img.shape[0]
+                img1 = concat_img[:, :h // 2]
+                img2 = concat_img[:, h // 2:]
             sample['img1'] = torch.from_numpy(img1).permute(2, 0, 1).float()
             sample['img2'] = torch.from_numpy(img2).permute(2, 0, 1).float()
             sample['meta'] = self.extra_info[index]
@@ -77,8 +84,14 @@ class StereoDataset(data.Dataset):
         else:
             valid = disp < 512
 
-        img1 = frame_utils.read_gen(self.image_list[index][0])
-        img2 = frame_utils.read_gen(self.image_list[index][1])
+        if len(self.image_list[index]) > 1:
+            img1 = frame_utils.read_gen(self.image_list[index][0])
+            img2 = frame_utils.read_gen(self.image_list[index][1])
+        else:
+            concat_img = frame_utils.read_gen(self.image_list[index][0])
+            h = concat_img.shape[0]
+            img1 = concat_img[:, :h // 2]
+            img2 = concat_img[:, h // 2:]
         super_pixel_label = self.image_list[index][0][:-len('.png')] + "_lsc_lbl.png"
         if not os.path.exists(super_pixel_label):
             img = cv2.cvtColor(np.array(img1), cv2.COLOR_RGB2BGR)

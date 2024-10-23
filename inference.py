@@ -49,6 +49,8 @@ def get_parser():
         default="disparity",
         help="The attribute to visualize.",
     )
+    parser.add_argument("--concat",
+                        action="store_true")
     parser.add_argument(
         "opts",
         help="Modify config options using the command-line 'KEY VALUE' pairs",
@@ -163,8 +165,12 @@ if __name__ == "__main__":
         else:
             raise ValueError(f"Not supported dataset {args.dataset_name} for inference")
     elif args.input:
-        n_pairs = len(args.input) // 2
-        image_list = list(zip(args.input[:n_pairs], args.input[n_pairs:]))
+        if not args.concat:
+            n_pairs = len(args.input) // 2
+            image_list = list(zip(args.input[:n_pairs], args.input[n_pairs:]))
+        else:
+            n_pairs = len(args.input)
+            image_list = args.input
         print(image_list)
         dataset = datasets.StereoDataset()
         dataset.image_list = image_list
