@@ -89,7 +89,7 @@ class StereoDataset(data.Dataset):
         else:
             valid = disp < 512
 
-        if self.concat_input:
+        if not self.concat_input:
             img1 = frame_utils.read_gen(self.image_list[index][0])
             img2 = frame_utils.read_gen(self.image_list[index][1])
         else:
