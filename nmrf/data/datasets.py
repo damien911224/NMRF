@@ -66,6 +66,10 @@ class StereoDataset(data.Dataset):
                 w = concat_img.shape[1]
                 img1 = concat_img[:, :w // 2]
                 img2 = concat_img[:, w // 2:]
+                print(concat_img.shape)
+                print(img1.shape)
+                print(img2.shape)
+                exit()
             sample['img1'] = torch.from_numpy(img1).permute(2, 0, 1).float()
             sample['img2'] = torch.from_numpy(img2).permute(2, 0, 1).float()
             sample['meta'] = self.extra_info[index]
