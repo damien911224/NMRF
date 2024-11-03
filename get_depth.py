@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # 임의의 2D 바운딩 박스 좌표 및 depth map 예제
     bbox_2d = [100, 150, 200, 250]
     depth_map = np.random.uniform(0.5, 5.0, (480, 640))
-    image = cv2.imread(left_image_path)
+    image = cv2.imread(image_path)
     h, w, c = image.shape
     image = image[:, :w // 2]
 
