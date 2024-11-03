@@ -22,6 +22,10 @@ if __name__ == '__main__':
     # Depth map 변환
     depth_map = disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters)
 
+    print(depth_map)
+    print(np.min(depth_map))
+    print(np.max(depth_map))
+
     # Depth map normalization (0-255 범위로 스케일링)
     depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX)
     depth_map_normalized = depth_map_normalized.astype(np.uint8)
