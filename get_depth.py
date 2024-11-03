@@ -80,7 +80,7 @@ if __name__ == '__main__':
     image_path = "/mnt/hdd0/stereo/++20241016_150903/1729059831.8904958.png"
 
     # 임의의 2D 바운딩 박스 좌표 및 depth map 예제
-    bbox_2d = [500, 500, 500, 500]
+    bbox_2d = [500, 500, 1000, 1000]
     image = cv2.imread(image_path)
     h, w, c = image.shape
     image = image[:, :w // 2]
