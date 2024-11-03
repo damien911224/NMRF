@@ -14,4 +14,4 @@ print(disparity)
 
 print()
 
-print(depth)
+print(np.max(depth))
