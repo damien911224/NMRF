@@ -99,8 +99,6 @@ def run_on_dataset(dataset, model, output, find_output_path=None, show_attr="dis
             dirname = os.path.dirname(output_path)
             os.makedirs(dirname, exist_ok=True)
             visualized_output.save(output_path)
-            print(output_path)
-            exit()
             np.save(output_path.replace(".png", ".npy"), disp_pred.numpy())
         else:
             cv2.namedWindow(f"{show_attr}", cv2.WINDOW_NORMAL)
