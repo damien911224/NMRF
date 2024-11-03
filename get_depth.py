@@ -2,7 +2,7 @@
 import numpy as np
 
 np_path = "/mnt/hdd0/NMRF/kitti/1729059831.8904958.npy"
-disparity = np.load(np_path)
+disparity = np.load(np_path) / 255.0
 
 B = 120 # mm
 f = 2.1 # 2.1 or 4 mm
