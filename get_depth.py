@@ -73,52 +73,52 @@ if __name__ == '__main__':
     output_path = "/mnt/hdd0/NMRF/depth/1729059831.8904958.png"
     plt.imsave(output_path, depth_map_normalized, cmap='magma')
 
-    ###
-    # 2D to 3D
-    ###
-
-    image_path = "/mnt/hdd0/stereo/++20241016_150903/1729059831.8904958.png"
-
-    # 임의의 2D 바운딩 박스 좌표 및 depth map 예제
-    bbox_2d = [500, 500, 1000, 1000]
-    image = cv2.imread(image_path)
-    h, w, c = image.shape
-    image = image[:, :w // 2]
-
-    # 3D 바운딩 박스 생성
-    bbox_3d = get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length_pixels, cx, cy)
-
-    # 2D 바운딩 박스 시각화
-    cv2.rectangle(image, (bbox_2d[0], bbox_2d[1]), (bbox_2d[2], bbox_2d[3]), (0, 255, 0), 2)
-    cv2.imwrite("/mnt/hdd0/NMRF/depth/2d_bounding_box.png", image)
-
-    # 3D 바운딩 박스 시각화
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    # 3D 바운딩 박스 코너 시각화
-    for corner in bbox_3d["corners"]:
-        ax.scatter(corner[0], corner[1], corner[2], color="red", s=50)
-
-    # 중심점 시각화
-    ax.scatter(bbox_3d["center"][0], bbox_3d["center"][1], bbox_3d["center"][2], color="blue", s=100, label="Center")
-
-    # 축 레이블 설정
-    ax.set_xlabel("X (m)")
-    ax.set_ylabel("Y (m)")
-    ax.set_zlabel("Z (m)")
-
-    # 3D 바운딩 박스를 둘러싼 선 그리기 (테두리 연결)
-    corners = bbox_3d["corners"]
-    edges = [
-        (0, 1), (1, 3), (3, 2), (2, 0)  # 위쪽 면 (top-left to top-right to bottom-right to bottom-left)
-    ]
-
-    for edge in edges:
-        ax.plot([corners[edge[0]][0], corners[edge[1]][0]],
-                [corners[edge[0]][1], corners[edge[1]][1]],
-                [corners[edge[0]][2], corners[edge[1]][2]], 'r')
-
-    ax.legend()
-    plt.savefig("/mnt/hdd0/NMRF/depth/3d_bounding_box.png")
-    plt.close()
+    # ###
+    # # 2D to 3D
+    # ###
+    #
+    # image_path = "/mnt/hdd0/stereo/++20241016_150903/1729059831.8904958.png"
+    #
+    # # 임의의 2D 바운딩 박스 좌표 및 depth map 예제
+    # bbox_2d = [500, 500, 1000, 1000]
+    # image = cv2.imread(image_path)
+    # h, w, c = image.shape
+    # image = image[:, :w // 2]
+    #
+    # # 3D 바운딩 박스 생성
+    # bbox_3d = get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length_pixels, cx, cy)
+    #
+    # # 2D 바운딩 박스 시각화
+    # cv2.rectangle(image, (bbox_2d[0], bbox_2d[1]), (bbox_2d[2], bbox_2d[3]), (0, 255, 0), 2)
+    # cv2.imwrite("/mnt/hdd0/NMRF/depth/2d_bounding_box.png", image)
+    #
+    # # 3D 바운딩 박스 시각화
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+    #
+    # # 3D 바운딩 박스 코너 시각화
+    # for corner in bbox_3d["corners"]:
+    #     ax.scatter(corner[0], corner[1], corner[2], color="red", s=50)
+    #
+    # # 중심점 시각화
+    # ax.scatter(bbox_3d["center"][0], bbox_3d["center"][1], bbox_3d["center"][2], color="blue", s=100, label="Center")
+    #
+    # # 축 레이블 설정
+    # ax.set_xlabel("X (m)")
+    # ax.set_ylabel("Y (m)")
+    # ax.set_zlabel("Z (m)")
+    #
+    # # 3D 바운딩 박스를 둘러싼 선 그리기 (테두리 연결)
+    # corners = bbox_3d["corners"]
+    # edges = [
+    #     (0, 1), (1, 3), (3, 2), (2, 0)  # 위쪽 면 (top-left to top-right to bottom-right to bottom-left)
+    # ]
+    #
+    # for edge in edges:
+    #     ax.plot([corners[edge[0]][0], corners[edge[1]][0]],
+    #             [corners[edge[0]][1], corners[edge[1]][1]],
+    #             [corners[edge[0]][2], corners[edge[1]][2]], 'r')
+    #
+    # ax.legend()
+    # plt.savefig("/mnt/hdd0/NMRF/depth/3d_bounding_box.png")
+    # plt.close()
