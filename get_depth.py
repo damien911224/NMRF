@@ -85,7 +85,7 @@ if __name__ == '__main__':
     image = cv2.imread(left_image_path)
 
     # 3D 바운딩 박스 생성
-    bbox_3d = get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length, cx, cy)
+    bbox_3d = get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length_pixels, cx, cy)
 
     # 2D 바운딩 박스 시각화
     cv2.rectangle(image, (bbox_2d[0], bbox_2d[1]), (bbox_2d[2], bbox_2d[3]), (0, 255, 0), 2)
