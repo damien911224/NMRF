@@ -3,6 +3,7 @@ import multiprocessing as mp
 import os
 import torch
 import cv2
+import numpy as np
 
 from nmrf.config import get_cfg
 from nmrf.utils.logger import setup_logger
@@ -98,6 +99,7 @@ def run_on_dataset(dataset, model, output, find_output_path=None, show_attr="dis
             dirname = os.path.dirname(output_path)
             os.makedirs(dirname, exist_ok=True)
             visualized_output.save(output_path)
+            np.save(output_path.split(".")[-2] + ".npy", disp_pred.numpy())
         else:
             cv2.namedWindow(f"{show_attr}", cv2.WINDOW_NORMAL)
             cv2.imshow(f"{show_attr}", visualized_output.get_image()[:, :, ::-1])
