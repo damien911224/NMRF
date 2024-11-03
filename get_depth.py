@@ -77,12 +77,14 @@ if __name__ == '__main__':
     # 2D to 3D
     ###
 
-    left_image_path = "/mnt/hdd0/stereo/++20241016_150903/1729059831.8904958.png"
+    image_path = "/mnt/hdd0/stereo/++20241016_150903/1729059831.8904958.png"
 
     # 임의의 2D 바운딩 박스 좌표 및 depth map 예제
     bbox_2d = [100, 150, 200, 250]
     depth_map = np.random.uniform(0.5, 5.0, (480, 640))
     image = cv2.imread(left_image_path)
+    h, w, c = image.shape
+    image = image[:, :w // 2]
 
     # 3D 바운딩 박스 생성
     bbox_3d = get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length_pixels, cx, cy)
