@@ -122,7 +122,10 @@ if __name__ == '__main__':
         except IndexError:
             continue
 
-        colors = ((cv2.imread(origin_path)[..., ::-1]).astype(np.float32) / 255.0).reshape(-1, 3)
+        image = cv2.imread(origin_path)[..., ::-1]
+        w = image.shape[1]
+        left_image = image[:, :w // 2]
+        colors = (left_image.astype(np.float32) / 255.0).reshape(-1, 3)
         pcd.colors = o3d.utility.Vector3dVector(colors)
 
         # 7. PointCloud 저장
