@@ -87,8 +87,8 @@ def get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length, cx, cy):
 
 if __name__ == '__main__':
     # 카메라 파라미터 설정
-    focal_length_pixels = 1066.7  # Left sensor FX 값
-    baseline_meters = 0.12        # baseline in meters (120mm)
+    focal_lengths_pixels = (1066.7, 1066.7) # Left sensor fx, fy 값
+    baseline_meters = 0.12 # baseline in meters (120mm)
 
     root_folder = os.path.join("/mnt/hdd0/NMRF/depth/npy")
     output_folder = os.path.join("/mnt/hdd0/NMRF/depth/outputs")
@@ -101,7 +101,7 @@ if __name__ == '__main__':
         disparity_map = np.load(path).transpose(0, 1)
 
         # Depth map 변환
-        depth_map = disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters)
+        depth_map = disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters)
 
         # Depth map normalization (0-255 범위로 스케일링)
         depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX)
