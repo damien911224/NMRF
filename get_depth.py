@@ -114,7 +114,7 @@ if __name__ == '__main__':
         points_3d = depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels)
 
         pcd = o3d.geometry.PointCloud()
-        pcd.points = o3d.utility.Vector3dVector(points)
+        pcd.points = o3d.utility.Vector3dVector(points_3d)
 
         max_bound = np.max(points, axis=0)
         min_bound = np.min(points, axis=0)
