@@ -113,5 +113,5 @@ if __name__ == '__main__':
         depth_map_normalized = depth_map_normalized.astype(np.uint8)
 
         # Depth map 저장
-        output_path = os.path.join(output_folder, os.path.basename(path) + ".png")
+        output_path = os.path.join(output_folder, os.path.basename(path).replace(".npy", ".png"))
         plt.imsave(output_path, depth_map_normalized, cmap='magma')
