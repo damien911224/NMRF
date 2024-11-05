@@ -55,7 +55,7 @@ if __name__ == '__main__':
     focal_length_pixels = 1066.7  # Left sensor FX 값
     baseline_meters = 0.12        # baseline in meters (120mm)
 
-    root_folder = os.path.join("/mnt/hdd0/NMRF/depth/??")
+    root_folder = os.path.join("/mnt/hdd0/NMRF/depth/npy")
     output_folder = os.path.join("/mnt/hdd0/NMRF/depth/outputs")
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
