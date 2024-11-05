@@ -76,7 +76,7 @@ def depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels):
     mask = depth_map > 0
 
     # u, v 인덱스 생성
-    v_indices, u_indices = np.indices(depth_map.shape)
+    v_indices, u_indices = np.indices(depth_map.shape, dtype=np.float32)
 
     # X, Y, Z 좌표 계산 (미터 단위)
     Z = depth_map[mask]
