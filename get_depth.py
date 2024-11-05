@@ -30,20 +30,24 @@ def disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters,
         # 크롭된 이미지의 새로운 중심 좌표 계산
         adjusted_cx = cx_original - crop_bbox[0]
         adjusted_cy = cy_original - crop_bbox[1]
-
-        # TODO: 아래 조정식 검증 필요
-        # Depth 맵 계산 (각 축에 맞춘 보정된 focal length와 중심 좌표 반영)
-        depth_map = np.zeros_like(disparity_map, dtype=np.float32)
-        non_zero_mask = disparity_map > 0
-        depth_map[non_zero_mask] = (
-                (focal_length_x * focal_length_y * baseline) /
-                ((disparity_map[non_zero_mask]) *
-                 np.sqrt((focal_length_x - adjusted_cx) ** 2 + (focal_length_y - adjusted_cy) ** 2))
-        )
     else:
-        depth_map = np.zeros_like(disparity_map, dtype=np.float32)
-        non_zero_mask = disparity_map > 0
-        depth_map[non_zero_mask] = (focal_length_pixels * baseline_meters) / disparity_map[non_zero_mask]
+        # 이전 식
+        # depth_map = np.zeros_like(disparity_map, dtype=np.float32)
+        # non_zero_mask = disparity_map > 0
+        # depth_map[non_zero_mask] = (focal_length_pixels * baseline_meters) / disparity_map[non_zero_mask]
+
+        adjusted_cx = 0
+        adjusted_cy = 0
+
+    # TODO: 아래 조정식 검증 필요
+    # Depth 맵 계산 (각 축에 맞춘 보정된 focal length와 중심 좌표 반영)
+    depth_map = np.zeros_like(disparity_map, dtype=np.float32)
+    non_zero_mask = disparity_map > 0
+    depth_map[non_zero_mask] = (
+            (focal_length_x * focal_length_y * baseline) /
+            ((disparity_map[non_zero_mask]) *
+             np.sqrt((focal_length_x - adjusted_cx) ** 2 + (focal_length_y - adjusted_cy) ** 2))
+    )
 
     return depth_map
 
