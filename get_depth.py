@@ -116,10 +116,10 @@ if __name__ == '__main__':
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(points_3d)
 
-        max_bound = np.max(points, axis=0)
-        min_bound = np.min(points, axis=0)
+        max_bound = np.max(points_3d, axis=0)
+        min_bound = np.min(points_3d, axis=0)
         print("Point Cloud")
-        print("shape", points.shape)
+        print("shape", points_3d.shape)
         print("max", max_bound, flush=True)
         print("min", min_bound, flush=True)
 
