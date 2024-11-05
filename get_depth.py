@@ -114,8 +114,23 @@ if __name__ == '__main__':
         depth_map = disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters)
         points_3d = depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels)
 
+        pcd = o3d.geometry.PointCloud()
+        pcd.points = o3d.utility.Vector3dVector(points)
+
+        max_bound = np.max(points, axis=0)
+        min_bound = np.min(points, axis=0)
+        print("Point Cloud")
+        print("shape", points.shape)
+        print("max", max_bound, flush=True)
+        print("min", min_bound, flush=True)
+
         origin_path = glob.glob("/mnt/hdd0/stereo/*", os.path.basename(path).replace(".npy", ".png"))[0]
         print(origin_path)
+
+        print("\nVisualize result")
+        coordinate_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1., origin=[0, 0, 0])
+        # o3d.visualization.draw_geometries([pcd, coordinate_frame])
+
         exit()
 
         # # Depth map normalization (0-255 범위로 스케일링)
