@@ -60,7 +60,7 @@ if __name__ == '__main__':
     output_folder = os.path.join("/mnt/hdd0/NMRF/depth/outputs")
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
-    paths = glob.glob(os.path.join(root_folder, "*.png"))
+    paths = glob.glob(os.path.join(root_folder, "*.npy"))
 
     for path in tqdm(paths):
         # disparity
