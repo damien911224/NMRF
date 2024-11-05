@@ -131,7 +131,7 @@ if __name__ == '__main__':
         print("\nVisualize result")
         coordinate_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1., origin=[0, 0, 0])
         # o3d.visualization.draw_geometries([pcd, coordinate_frame])
-        o3d.io.write_point_cloud(filename, pcd)
+        # o3d.io.write_point_cloud(filename, pcd)
 
         exit()
 
