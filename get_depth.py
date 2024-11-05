@@ -118,7 +118,7 @@ if __name__ == '__main__':
         pcd.points = o3d.utility.Vector3dVector(points_3d)
 
         try:
-            origin_path = glob.glob(os.path.join("/mnt/hdd0/stereo/*", os.path.basename(path).split("_")[0] + ".*"))[0]
+            origin_path = glob.glob(os.path.join("/mnt/hdd0/stereo/*", os.path.basename(path).split("_")[0] + "*"))[0]
         except IndexError:
             continue
 
