@@ -103,6 +103,7 @@ if __name__ == '__main__':
     for path in tqdm(paths):
         # disparity
         disparity_map = np.load(path).transpose(0, 1)
+        print(np.min(disparity_map), np.max(disparity_map))
 
         # Depth map 변환
         depth_map = disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters)
