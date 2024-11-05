@@ -98,7 +98,7 @@ if __name__ == '__main__':
     baseline_meters = 0.12 # baseline in meters (120mm)
 
     root_folder = os.path.join("/mnt/hdd0/NMRF/depth/npy")
-    output_folder = os.path.join("/mnt/hdd0/NMRF/depth/outputs")
+    output_folder = os.path.join("/mnt/hdd0/NMRF/depth/ply")
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
     paths = glob.glob(os.path.join(root_folder, "*.npy"))
