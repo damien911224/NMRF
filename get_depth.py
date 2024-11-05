@@ -114,13 +114,10 @@ if __name__ == '__main__':
         depth_map = disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters)
         points_3d = depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels)
 
-        print(points_3d.shape)
-
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(points_3d)
 
         origin_path = glob.glob(os.path.join("/mnt/hdd0/stereo/*", os.path.basename(path).split("_")[0] + ".png"))[0]
-        print(origin_path)
         colors = ((cv2.imread(origin_path)[..., ::-1]).astype(np.float32) / 255.0).reshape(-1, 3)
         pcd.colors = o3d.utility.Vector3dVector(colors)
 
