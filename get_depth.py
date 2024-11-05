@@ -44,7 +44,7 @@ def disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters,
     depth_map = np.zeros_like(disparity_map, dtype=np.float32)
     non_zero_mask = disparity_map > 0
     depth_map[non_zero_mask] = (
-            (focal_length_x * focal_length_y * baseline) /
+            (focal_length_x * focal_length_y * baseline_meters) /
             ((disparity_map[non_zero_mask]) *
              np.sqrt((focal_length_x - adjusted_cx) ** 2 + (focal_length_y - adjusted_cy) ** 2))
     )
