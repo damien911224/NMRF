@@ -7,10 +7,44 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 # Depth 계산 함수
-def disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters):
-    depth_map = np.zeros_like(disparity_map, dtype=np.float32)
-    non_zero_mask = disparity_map > 0
-    depth_map[non_zero_mask] = (focal_length_pixels * baseline_meters) / disparity_map[non_zero_mask]
+def disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters,
+                       image_size=None, crop_bbox=None):
+    # disparity_map: shape = (H, W)
+    # focal_lengths_pixels: 튜플 형태 (fx, fy), pixel 단위의 x와 y축에 대한 focal length
+    # baseline_meters: meter 단위의 baseline length
+    # image_size: 튜플 형태 (w, h), 크랍 이미지를 이용했을 때, focal length를 조정 하기 위해 필요
+    # crop_bbox: 튜플 형태 (x, y, w, h) 크랍 bbox의 중심 좌표와 박스의 사이즈.
+
+    focal_length_x, focal_length_y = focal_lengths_pixels
+
+    if crop_bbox is not None:
+        assert image_size is not None
+
+        focal_length_x = focal_length_x * (crop_bbox[2] / image_size[0])
+        focal_length_y = focal_length_y * (crop_bbox[3] / image_size[1])
+
+        # 원본 이미지의 중심 좌표
+        cx_original = image_size[0] / 2
+        cy_original = image_size[1] / 2
+
+        # 크롭된 이미지의 새로운 중심 좌표 계산
+        adjusted_cx = cx_original - crop_bbox[0]
+        adjusted_cy = cy_original - crop_bbox[1]
+
+        # TODO: 아래 조정식 검증 필요
+        # Depth 맵 계산 (각 축에 맞춘 보정된 focal length와 중심 좌표 반영)
+        depth_map = np.zeros_like(disparity_map, dtype=np.float32)
+        non_zero_mask = disparity_map > 0
+        depth_map[non_zero_mask] = (
+                (focal_length_x * focal_length_y * baseline) /
+                ((disparity_map[non_zero_mask]) *
+                 np.sqrt((focal_length_x - adjusted_cx) ** 2 + (focal_length_y - adjusted_cy) ** 2))
+        )
+    else:
+        depth_map = np.zeros_like(disparity_map, dtype=np.float32)
+        non_zero_mask = disparity_map > 0
+        depth_map[non_zero_mask] = (focal_length_pixels * baseline_meters) / disparity_map[non_zero_mask]
+
     return depth_map
 
 import numpy as np
@@ -64,10 +98,7 @@ if __name__ == '__main__':
 
     for path in tqdm(paths):
         # disparity
-        disparity_map = np.load(path)
-        print(disparity_map.shape)
-        print(np.max(disparity_map))
-        exit()
+        disparity_map = np.load(path).transpose(0, 1)
 
         # Depth map 변환
         depth_map = disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters)
