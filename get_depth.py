@@ -59,18 +59,33 @@ def depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels):
     fx, fy = focal_lengths_pixels
     cx, cy = camera_positions_pixels
 
-    # 3D 포인트를 저장할 배열을 초기화합니다.
-    points_3d = np.zeros((height, width, 3), dtype=np.float32)
+    # # 3D 포인트를 저장할 배열을 초기화합니다.
+    # points_3d = np.zeros((height, width, 3), dtype=np.float32)
+    #
+    # for v in range(height):
+    #     for u in range(width):
+    #         Z = depth_map[v, u]  # 깊이 값 (미터 단위)
+    #
+    #         # 깊이 값이 0이 아닌 경우에만 3D 포인트 계산
+    #         if Z > 0:
+    #             X = (u - cx) * Z / fx
+    #             Y = (v - cy) * Z / fy
+    #             points_3d[v, u] = np.array([X, Y, Z])  # X, Y, Z는 미터 단위
 
-    for v in range(height):
-        for u in range(width):
-            Z = depth_map[v, u]  # 깊이 값 (미터 단위)
+    # 깊이 값이 0이 아닌 위치를 마스크로 선택
+    mask = depth_map > 0
 
-            # 깊이 값이 0이 아닌 경우에만 3D 포인트 계산
-            if Z > 0:
-                X = (u - cx) * Z / fx
-                Y = (v - cy) * Z / fy
-                points_3d[v, u] = np.array([X, Y, Z])  # X, Y, Z는 미터 단위
+    # u, v 인덱스 생성
+    v_indices, u_indices = np.indices(depth_map.shape)
+
+    # X, Y, Z 좌표 계산 (미터 단위)
+    Z = depth_map[mask]
+    X = (u_indices[mask] - cx) * Z / fx
+    Y = (v_indices[mask] - cy) * Z / fy
+
+    # 결과 배열 초기화 및 3D 포인트 할당
+    points_3d = np.zeros((*depth_map.shape, 3))  # 3D 포인트 배열 초기화
+    points_3d[mask] = np.stack((X, Y, Z), axis=-1)
 
     return points_3d
 
