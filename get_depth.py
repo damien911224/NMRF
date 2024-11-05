@@ -4,6 +4,8 @@ import cv2
 import os
 import glob
 import matplotlib.pyplot as plt
+import open3d as o3d
+
 from tqdm import tqdm
 
 # Depth 계산 함수
@@ -72,24 +74,6 @@ def depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels):
 
     return points_3d
 
-import open3d as o3d
-import numpy as np
-
-filename = "20241014_data_labeling/sub_dir1/points/real_240930-86.npy"
-points = np.load(filename, allow_pickle=True)
-pcd = o3d.geometry.PointCloud()
-pcd.points = o3d.utility.Vector3dVector(points)
-
-max_bound = np.max(points, axis=0)
-min_bound = np.min(points, axis=0)
-print("Point Cloud")
-print("shape", points.shape)
-print("max", max_bound, flush=True)
-print("min", min_bound, flush=True)
-
-print("\nVisualize result")
-coordinate_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1., origin=[0, 0, 0])
-o3d.visualization.draw_geometries([pcd, coordinate_frame])
 
 if __name__ == '__main__':
     # 카메라 파라미터 설정
