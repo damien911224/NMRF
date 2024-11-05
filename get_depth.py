@@ -113,6 +113,9 @@ if __name__ == '__main__':
         depth_map = disparity_to_depth(disparity_map, focal_lengths_pixels, baseline_meters)
         points_3d = depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels)
 
+        print(points_3d.shape)
+        exit()
+
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(points_3d)
 
