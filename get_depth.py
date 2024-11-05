@@ -1,7 +1,9 @@
 
 import numpy as np
 import cv2
+import glob
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # Depth 계산 함수
 def disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters):
@@ -52,73 +54,26 @@ if __name__ == '__main__':
     # 카메라 파라미터 설정
     focal_length_pixels = 1066.7  # Left sensor FX 값
     baseline_meters = 0.12        # baseline in meters (120mm)
-    cx, cy = 1137.39, 669.69
 
-    # disparity
-    np_path = "/mnt/hdd0/NMRF/kitti/1729059831.8904958.npy"
-    disparity_map = np.load(np_path)
+    root_folder = os.path.join("/mnt/hdd0/NMRF/depth/??")
+    output_folder = os.path.join("/mnt/hdd0/NMRF/depth/outputs")
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder, exist_ok=True)
+    paths = glob.glob(os.path.join(root_folder, "*.png"))
 
-    # Depth map 변환
-    depth_map = disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters)
+    for path in tqdm(paths):
+        # disparity
+        disparity_map = np.load(path)
+        print(disparity_map.shape)
+        print(np.max(disparity_map))
 
-    print(depth_map)
-    print(np.min(depth_map))
-    print(np.max(depth_map))
+        # Depth map 변환
+        depth_map = disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters)
 
-    # Depth map normalization (0-255 범위로 스케일링)
-    depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX)
-    depth_map_normalized = depth_map_normalized.astype(np.uint8)
+        # Depth map normalization (0-255 범위로 스케일링)
+        depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX)
+        depth_map_normalized = depth_map_normalized.astype(np.uint8)
 
-    # Depth map 저장
-    output_path = "/mnt/hdd0/NMRF/depth/1729059831.8904958.png"
-    plt.imsave(output_path, depth_map_normalized, cmap='magma')
-
-    # ###
-    # # 2D to 3D
-    # ###
-    #
-    # image_path = "/mnt/hdd0/stereo/++20241016_150903/1729059831.8904958.png"
-    #
-    # # 임의의 2D 바운딩 박스 좌표 및 depth map 예제
-    # bbox_2d = [500, 500, 1000, 1000]
-    # image = cv2.imread(image_path)
-    # h, w, c = image.shape
-    # image = image[:, :w // 2]
-    #
-    # # 3D 바운딩 박스 생성
-    # bbox_3d = get_3d_bbox_from_2d(bbox_2d, depth_map, focal_length_pixels, cx, cy)
-    #
-    # # 2D 바운딩 박스 시각화
-    # cv2.rectangle(image, (bbox_2d[0], bbox_2d[1]), (bbox_2d[2], bbox_2d[3]), (0, 255, 0), 2)
-    # cv2.imwrite("/mnt/hdd0/NMRF/depth/2d_bounding_box.png", image)
-    #
-    # # 3D 바운딩 박스 시각화
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-    #
-    # # 3D 바운딩 박스 코너 시각화
-    # for corner in bbox_3d["corners"]:
-    #     ax.scatter(corner[0], corner[1], corner[2], color="red", s=50)
-    #
-    # # 중심점 시각화
-    # ax.scatter(bbox_3d["center"][0], bbox_3d["center"][1], bbox_3d["center"][2], color="blue", s=100, label="Center")
-    #
-    # # 축 레이블 설정
-    # ax.set_xlabel("X (m)")
-    # ax.set_ylabel("Y (m)")
-    # ax.set_zlabel("Z (m)")
-    #
-    # # 3D 바운딩 박스를 둘러싼 선 그리기 (테두리 연결)
-    # corners = bbox_3d["corners"]
-    # edges = [
-    #     (0, 1), (1, 3), (3, 2), (2, 0)  # 위쪽 면 (top-left to top-right to bottom-right to bottom-left)
-    # ]
-    #
-    # for edge in edges:
-    #     ax.plot([corners[edge[0]][0], corners[edge[1]][0]],
-    #             [corners[edge[0]][1], corners[edge[1]][1]],
-    #             [corners[edge[0]][2], corners[edge[1]][2]], 'r')
-    #
-    # ax.legend()
-    # plt.savefig("/mnt/hdd0/NMRF/depth/3d_bounding_box.png")
-    # plt.close()
+        # Depth map 저장
+        output_path = "/mnt/hdd0/NMRF/depth/1729059831.8904958.png"
+        plt.imsave(output_path, depth_map_normalized, cmap='magma')
