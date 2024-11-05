@@ -119,7 +119,7 @@ if __name__ == '__main__':
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(points_3d)
 
-        origin_path = glob.glob(os.path.join("/mnt/hdd0/stereo/*", os.path.basename(path).split("_")[0] + ".png")[0]
+        origin_path = glob.glob(os.path.join("/mnt/hdd0/stereo/*", os.path.basename(path).split("_")[0] + ".png"))[0]
         print(origin_path)
         colors = (cv2.imread(origin_path)[..., ::-1]).astype(np.float32) / 255.0
         pcd.colors = o3d.utility.Vector3dVector(colors)
