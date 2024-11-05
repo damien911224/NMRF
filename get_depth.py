@@ -119,22 +119,19 @@ if __name__ == '__main__':
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(points_3d)
 
-        max_bound = np.max(points_3d, axis=0)
-        min_bound = np.min(points_3d, axis=0)
-        print("Point Cloud")
-        print("shape", points_3d.shape)
-        print("max", max_bound, flush=True)
-        print("min", min_bound, flush=True)
-
-        origin_path = glob.glob("/mnt/hdd0/stereo/*", os.path.basename(path).replace(".npy", ".png"))[0]
+        origin_path = glob.glob(os.path.join("/mnt/hdd0/stereo/*", os.path.basename(path).replace(".npy", ".png")))[0]
         print(origin_path)
+        colors = (cv2.imread(origin_path)[..., ::-1]).astype(np.float32) / 255.0
+        pcd.colors = o3d.utility.Vector3dVector(colors)
 
-        print("\nVisualize result")
-        coordinate_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1., origin=[0, 0, 0])
+        # 7. PointCloud 저장
+        output_path = os.path.join(output_folder, os.path.basename(path).replace(".npy", ".ply"))
+        o3d.io.write_point_cloud(output_path, pcd)
+
+        # print("\nVisualize result")
+        # coordinate_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1., origin=[0, 0, 0])
         # o3d.visualization.draw_geometries([pcd, coordinate_frame])
         # o3d.io.write_point_cloud(filename, pcd)
-
-        exit()
 
         # # Depth map normalization (0-255 범위로 스케일링)
         # depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX)
