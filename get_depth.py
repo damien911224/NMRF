@@ -67,6 +67,7 @@ if __name__ == '__main__':
         disparity_map = np.load(path)
         print(disparity_map.shape)
         print(np.max(disparity_map))
+        exit()
 
         # Depth map 변환
         depth_map = disparity_to_depth(disparity_map, focal_length_pixels, baseline_meters)
