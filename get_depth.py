@@ -85,7 +85,7 @@ def depth_to_3d(depth_map, focal_lengths_pixels, camera_positions_pixels):
 
     # 결과 배열 초기화 및 3D 포인트 할당
     points_3d = np.zeros((*depth_map.shape, 3))  # 3D 포인트 배열 초기화
-    points_3d[mask] = np.stack((X, Y, Z), axis=-1)
+    points_3d[mask] = np.stack((X, Y, Z), axis=-1).flatten(0, 1)
 
     return points_3d
 
@@ -130,7 +130,7 @@ if __name__ == '__main__':
 
         print("\nVisualize result")
         coordinate_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1., origin=[0, 0, 0])
-        o3d.visualization.draw_geometries([pcd, coordinate_frame])
+        # o3d.visualization.draw_geometries([pcd, coordinate_frame])
         o3d.io.write_point_cloud(filename, pcd)
 
         exit()
