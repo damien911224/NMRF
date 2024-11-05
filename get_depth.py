@@ -126,7 +126,7 @@ if __name__ == '__main__':
         pcd.colors = o3d.utility.Vector3dVector(colors)
 
         # 7. PointCloud 저장
-        output_path = os.path.join(output_folder, os.path.basename(path).replace(".npy", ".ply"))
+        output_path = os.path.join(output_folder, os.path.basename(path).split("_")[0] + ".ply")
         o3d.io.write_point_cloud(output_path, pcd)
 
         # print("\nVisualize result")
